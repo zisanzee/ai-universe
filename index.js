@@ -78,13 +78,14 @@ const buttonFun = async id =>{
 
           <div>
             <h1 class="font-semibold">Integretions</h1>
-            <li>${tool.integrations[0]}</li>
-            <li>${tool.integrations[1]}</li>
-            <li>${tool.integrations[2]}</li>
+            <li>${tool.integrations[0] || 'none'}</li>
+            <li>${tool.integrations[1] || 'none'}</li>
+            <li>${tool.integrations[2] || 'none'}</li>
           </div>
         </div>
       </div>
-      <div class="w-[60%] rounded-lg text-center border p-6" >
+      <div class="w-[60%] rounded-lg text-center border p-6 relative" >
+        <h1 class=" absolute top-2 right-7 bg-red-500 text-white py-3 rounded-3xl px-6 mt-5">${(tool.accuracy.score * 100) || '100'}% Accuracy</h1>
         <img class="rounded-lg w-full" src="${tool.image_link[0]}" alt="">
         <h1 class=" mt-5">${tool.input_output_examples[0]?.input}</h1>
         <h1 class=" mb-5">${tool.input_output_examples[0]?.output}</h1>
