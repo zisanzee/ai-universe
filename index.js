@@ -1,16 +1,23 @@
 const main = document.getElementById('main');
 const details = document.getElementById('details')
 const modalBox = document.getElementById('modal')
-const dataLoad = async () => {
+const dataLoad = async (showMore) => {
   const res = await fetch('https://openapi.programming-hero.com/api/ai/tools')
   const data = await res.json();
   const tools = data.data.tools;
-  cardRender(tools)
+  const toolsSliced = tools.slice(0, 5)
+  if(showMore){
+    cardRender(toolsSliced)
+  } else {
+    cardRender(tools)
+    main.removeChild(showButton)
+  }
   
 }
-dataLoad()
+dataLoad(true)
 
 function cardRender(tools) {
+  main.innerHTML = '';
   tools.forEach(tool => {
     const div = document.createElement('div')
     div.innerHTML = `
@@ -32,21 +39,30 @@ function cardRender(tools) {
           <img src="./Frame.png" alt="">
           <h1 class="font-medium">${tool.published_in}</h1>
         </div>
-        <button onclick="buttonFun(${tool.id})" class="btn btn-circle btn-outline">
+        <button onclick="buttonFun('${tool.id}')" class="btn btn-circle btn-outline">
         <i class="fa-solid w-full fa-arrow-right"></i>
         </button>
       </div>
       
     </div>
   `
+  
+  
     main.appendChild(div)
     // modalRender(tool)
   });
+  showButton = document.createElement('button')
+  showButton.innerText = 'Show More...'
+  showButton.classList= `text-zinc-500 font-bold hover:scale-110 p-6 rounded-lg transition w-fit mx-auto bg-slate-200`
+  main.appendChild(showButton)
+  showButton.addEventListener('click', ()=>{
+    dataLoad(false)
+  })
 }
 
 
 const buttonFun = async id =>{
-   id = id.toString().padStart(2, 0)
+   
  
   const res = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
   const data = await res.json();
